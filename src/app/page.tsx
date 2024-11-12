@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { delay } from "@/lib/utils";
 import { Suspense } from "react";
 import { getWixClient } from "@/lib/wix-client.base";
+import Product from "@/components/Product";
 
 
 export default function Home() {
@@ -62,6 +63,15 @@ if (!featuredProducts.items.length) {
   return null;
 }
 
-return "FeaturedProducts"
+return (
+  <div className="space-y-5">
+    <h2 className="text-2xl font-bold">Featured Products</h2>
+    <div className="flex grid-cols-2 flex-col sm:grid md:grid-cols-3 lg:grid-cols-4">
+      {featuredProducts.items.map((product) => (
+        <Product key={product._id} product={product} />
+      ))}
+    </div>
+    </div>
+)
 
 }
