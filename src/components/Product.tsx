@@ -8,10 +8,11 @@ interface ProductProps {
 export default function Product({ product }: ProductProps) {
     const mainImage = product.media?.mainMedia?.image;
 
-    const resizedImageUrl = mainImage?.url?. wixMedia.getScaledToFillImageUrl(mainImage.url, 700, 700,{})
+    const resizedImageUrl = mainImage?.url?wixMedia.getScaledToFillImageUrl(mainImage.url, 700, 700,{})
     :null;
     
     return <Link href={`/products/${product.slug}`}>
-           {product.name}
+           <img 
+           src={resizedImageUrl || "/placeholder.png"}
            </Link>
 }
