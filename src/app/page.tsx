@@ -3,6 +3,11 @@ import banner from "@/assets/banner.jpg"
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { delay } from "@/lib/utils";
+import { Suspense } from "react";
+import { getWixClient } from "@/lib/wix-client.base";
+
+
 export default function Home() {
   return (
    <main className="max-auto w-7xl mx-auto px-5 py-10 space-y-10">
@@ -27,9 +32,36 @@ export default function Home() {
   alt="Flow Shop banner"
   className="h-full object-cover"
   />
-  <div className="absolute inset-0 bg-gradient-to-r from-secondary" />
+  <div className="absolute inset-0 bg-gradient-to-r from-secondary via-transparent to-transparent" />
   </div>
   </div>
+  <Suspense fallback={"Loading . . ."}>
+  <FeaturedProducts />
+  </Suspense>
 </main>
   );
+}
+
+async function FeaturedProducts() {
+await delay(1000);
+
+const wixClient = getWixClient();
+
+const {collection} = await wixClient.collections.getCollectionBySlug("featured-products");
+if (!collection) {
+  return null;
+}
+
+const featuredProducts = await wixClient.products
+.queryProducts()
+.hasSome("collectionIds",[collection._id])
+.descending("lastUpdated")
+.find();
+
+if (!featuredProducts.items.length) {
+  return null;
+}
+
+return "FeaturedProducts"
+
 }

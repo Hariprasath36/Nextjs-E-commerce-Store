@@ -30,8 +30,9 @@ export function getWixClient(tokens: Tokens | undefined) {
     },
     auth: OAuthStrategy({
       clientId: env.NEXT_PUBLIC_WIX_CLIENT_ID,
-     
+      tokens,
     }),
   });
 }
 
+export type WixClient = ReturnType<typeof getWixClient>;
